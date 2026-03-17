@@ -76,6 +76,33 @@ SELECT * FROM Employee_log
 **Expected Output:**
 - If an attempt is made to delete a record from `sensitive_data`, an error message is raised, e.g., `ERROR: Deletion not allowed on this table.`
 
+**Program:**
+```
+CREATE TABLE Sensitive_Table (
+  Id INTEGER,
+  Data VARCHAR(40)
+  );
+
+
+CREATE OR REPLACE TRIGGER trg_prevent_delete
+BEFORE DELETE ON Sensitive_Table
+FOR EACH ROW
+BEGIN 
+  RAISE_APPLICATION_ERROR(-20001, 'ERROR: Deletion is not allowed on this Table');
+END;
+/
+
+INSERT INTO Sensitive_Table VALUES (1, 'John');
+INSERT INTO Sensitive_Table VALUES (2, 'Alice');
+INSERT INTO Sensitive_Table VALUES (3, 'Ben');
+
+DELETE FROM Sensitive_Table WHERE Id=1;
+```
+
+**Output:**
+
+<img width="1919" height="935" alt="q2" src="https://github.com/user-attachments/assets/223f7997-687e-48ae-a29d-150a75c9b1b5" />
+
 ---
 
 ## 3. Write a trigger to automatically update a `last_modified` timestamp.
