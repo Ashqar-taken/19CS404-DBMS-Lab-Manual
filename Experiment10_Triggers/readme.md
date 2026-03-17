@@ -113,6 +113,36 @@ DELETE FROM Sensitive_Table WHERE Id=1;
 **Expected Output:**
 - The `last_modified` column in the `products` table is updated automatically to the current date and time when any record is updated.
 
+**Program:**
+```
+CREATE TABLE Product (
+  Id INTEGER,
+  Name VARCHAR(40),
+  Price Number,
+  Last_modified TIMESTAMP
+  );
+
+
+CREATE OR REPLACE TRIGGER trg_last_modified
+BEFORE UPDATE ON Product
+FOR EACH ROW
+BEGIN 
+  :New.Last_modified := SYSTIMESTAMP;
+END;
+/
+
+INSERT INTO Product VALUES (1, 'Ball', 18, NULL);
+INSERT INTO Product VALUES (2, 'Rice', 250, NULL);
+
+UPDATE Product SET price=300 WHERE Id=2;
+
+SELECT * FROM Product;
+```
+
+**Output:**
+
+<img width="1919" height="926" alt="output" src="https://github.com/user-attachments/assets/d0d1eced-f0b9-4461-91d8-888ee7e04972" />
+
 ---
 
 ## 4. Write a trigger to keep track of the number of updates made to a table.
