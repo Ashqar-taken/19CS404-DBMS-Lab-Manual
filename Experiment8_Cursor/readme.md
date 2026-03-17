@@ -79,6 +79,53 @@ END;
 **Output:**  
 The program should display the employee details or an error message.
 
+**Program:**
+```
+CREATE TABLE Employee (emp_id INTEGER PRIMARY KEY, emp_name VARCHAR(40), designation VARCHAR(40));
+
+INSERT INTO Employee VALUES (1, 'Ashqar', 'Kill');
+INSERT INTO Employee VALUES (2, 'kumar', 'sales');
+INSERT INTO Employee VALUES (3, 'Kali', 'manufacture');
+DECLARE
+  CURSOR emp_cur IS SELECT emp_name, designation FROM Employee;
+  
+  v_name Employee.emp_name%TYPE;
+  v_designation Employee.designation%TYPE;
+  
+  v_count NUMBER := 0;
+BEGIN 
+  OPEN emp_cur;
+  
+  LOOP
+    FETCH emp_cur INTO v_name, v_designation;
+    EXIT WHEN emp_cur%NOTFOUND;
+    v_count := v_count + 1;
+    
+    DBMS_OUTPUT.PUT_LINE('Name: ' || v_name || ' | designation: ' || v_designation);
+  
+  END LOOP;
+  
+  CLOSE emp_cur;
+  
+  IF v_count = 0 THEN 
+    RAISE NO_DATA_FOUND;
+  END IF; 
+  
+  EXCEPTION 
+    WHEN NO_DATA_FOUND THEN 
+      DBMS_OUTPUT.PUT_LINE('No Employee records found.');
+      
+    WHEN OTHERS THEN 
+      DBMS_OUTPUT.PUT_LINE('ERROR OCCURED: ' || SQLERRM);
+  
+END;
+/
+```
+
+**Output:**
+
+<img width="1919" height="989" alt="output" src="https://github.com/user-attachments/assets/71e9e210-cf6a-465b-8ef0-30f59dd362a4" />
+
 ---
 
 ### **Question 2: Parameterized Cursor with Exception Handling**
@@ -97,6 +144,57 @@ The program should display the employee details or an error message.
 
 **Output:**  
 The program should display the employee details within the specified salary range or an error message if no data is found.
+
+**Program:**
+```
+CREATE TABLE Employee (emp_id INTEGER PRIMARY KEY, emp_name VARCHAR(40), designation VARCHAR(40), salary INTEGER);
+
+INSERT INTO Employee VALUES (1, 'Ashqar', 'Kill', '13000');
+INSERT INTO Employee VALUES (2, 'kumar', 'sales', '20000');
+INSERT INTO Employee VALUES (3, 'Kali', 'manufacture', '32000');
+INSERT INTO Employee VALUES (4, 'Bob', 'Receptionist', '15000');
+INSERT INTO Employee VALUES (5, 'Karen', 'sales', '20000');
+
+DECLARE
+  CURSOR emp_cur(p_min NUMBER, p_max NUMBER) IS SELECT emp_name, designation, salary FROM Employee WHERE salary BETWEEN p_min AND p_max;
+  
+  v_name Employee.emp_name%TYPE;
+  v_designation Employee.designation%TYPE;
+  v_salary Employee.salary%TYPE;
+  
+  v_count NUMBER := 0;
+BEGIN 
+  OPEN emp_cur(15000,30000);
+  
+  LOOP
+    FETCH emp_cur INTO v_name, v_designation, v_salary;
+    EXIT WHEN emp_cur%NOTFOUND;
+    v_count := v_count + 1;
+    
+    DBMS_OUTPUT.PUT_LINE('Name: ' || v_name || ' | designation: ' || v_designation || ' | salary: ' || v_salary);
+  
+  END LOOP;
+  
+  CLOSE emp_cur;
+  
+  IF v_count = 0 THEN 
+    RAISE NO_DATA_FOUND;
+  END IF; 
+  
+  EXCEPTION 
+    WHEN NO_DATA_FOUND THEN 
+      DBMS_OUTPUT.PUT_LINE('No Employee found in given salary range');
+      
+    WHEN OTHERS THEN 
+      DBMS_OUTPUT.PUT_LINE('ERROR OCCURED: ' || SQLERRM);
+  
+END;
+/
+```
+
+**Output:**
+
+<img width="1916" height="927" alt="output" src="https://github.com/user-attachments/assets/61fecb4c-c316-43b6-8c43-0e848ce700d4" />
 
 ---
 
