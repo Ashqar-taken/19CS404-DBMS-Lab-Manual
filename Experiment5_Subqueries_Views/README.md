@@ -38,123 +38,383 @@ DROP VIEW view_name;
 
 **Question 1**
 --
--- Paste Question 1 here
+```
+Write a SQL query to retrieve all columns from the CUSTOMERS table for customers whose Address as Delhi
+
+Sample table: CUSTOMERS
+
+ID          NAME        AGE         ADDRESS     SALARY
+----------  ----------  ----------  ----------  ----------
+
+1          Ramesh     32              Ahmedabad     2000
+2          Khilan        25              Delhi                 1500
+3          Kaushik      23              Kota                  2000
+4          Chaitali       25             Mumbai            6500
+5          Hardik        27              Bhopal              8500
+6          Komal         22              Hyderabad       4500
+
+7           Muffy          24              Indore            10000
+
+ 
+For example:
+
+Result
+ID          NAME        AGE         ADDRESS     SALARY
+----------  ----------  ----------  ----------  ----------
+2           Khilan      25          Delhi       1500
+
+```
+
+**Program:**
 
 ```sql
--- Paste your SQL code below for Question 1
+SELECT * FROM CUSTOMERS WHERE ADDRESS="Delhi"
 ```
 
 **Output:**
 
-![Output1](output.png)
+<img width="1312" height="814" alt="q1" src="https://github.com/user-attachments/assets/d575c04d-bc59-4e49-83e9-f43103cf02c3" />
+
 
 **Question 2**
 ---
--- Paste Question 2 here
+```
+Write a SQL query to retrieve all columns from the CUSTOMERS table for customers whose salary is EQUAL TO $1500.
+
+Sample table: CUSTOMERS
+
+ID          NAME        AGE         ADDRESS     SALARY
+----------  ----------  ----------  ----------  ----------
+
+1          Ramesh     32              Ahmedabad     2000
+2          Khilan        25              Delhi          1500
+3          Kaushik      23              Kota                  2000
+4          Chaitali       25             Mumbai            6500
+5          Hardik        27              Bhopal              8500
+6          Komal         22              Hyderabad       4500
+
+7           Muffy          24              Indore            10000
+
+ 
+ 
+
+For example:
+
+Result
+ID          NAME        AGE         ADDRESS     SALARY
+----------  ----------  ----------  ----------  ----------
+2           Khilan      25          Delhi       1500
+```
+
+**Program:**
 
 ```sql
--- Paste your SQL code below for Question 2
+SELECT * FROM CUSTOMERS WHERE SALARY = 1500
 ```
 
 **Output:**
 
-![Output2](output.png)
+<img width="1266" height="808" alt="q2" src="https://github.com/user-attachments/assets/80645b24-ce46-46fe-94cc-cc0ba56f172d" />
+
 
 **Question 3**
 ---
--- Paste Question 3 here
+```
+Write a SQL query to Retrieve the names and cities of customers who have the same city as customers with IDs 3 and 7
+
+SAMPLE TABLE: customer
+
+name             type
+---------------  ---------------
+id               INTEGER
+name             TEXT
+city             TEXT
+email            TEXT
+phone            INTEGER
+For example:
+
+Result
+name   city
+-----  ---------------
+Neha   Bangalore
+Rohit  Bangalore
+Manoj  Bangalore
+Vivek  Chandigarh
+
+```
+**Program:**
 
 ```sql
--- Paste your SQL code below for Question 3
+SELECT name, city FROM customer WHERE city IN (SELECT city FROM customer WHERE ID IN (3,7)); 
 ```
 
 **Output:**
 
-![Output3](output.png)
+<img width="1265" height="906" alt="q3" src="https://github.com/user-attachments/assets/4e3b39b0-98db-45a8-ba10-3caec21a2d68" />
+
 
 **Question 4**
 ---
--- Paste Question 4 here
+```
+From the following tables write a SQL query to count the number of customers with grades above the average in New York City. Return grade and count.
+
+customer table
+
+name         type
+-----------  ----------
+customer_id  int
+cust_name    text
+city         text
+grade        int
+salesman_id  int
+For example:
+
+Result
+grade       COUNT(*)
+----------  ----------
+300         2
+
+```
+
+**Program:**
 
 ```sql
--- Paste your SQL code below for Question 4
+SELECT grade, COUNT(*) FROM customer WHERE grade > (SELECT AVG(grade) FROM customer WHERE city='New York') GROUP BY grade
 ```
 
 **Output:**
 
-![Output4](output.png)
+<img width="1315" height="847" alt="q4" src="https://github.com/user-attachments/assets/92c302b7-68dd-477e-bbdd-316d93bba160" />
+
 
 **Question 5**
 ---
--- Paste Question 5 here
+```
+From the following tables, write a SQL query to find all the orders issued by the salesman 'Paul Adam'. Return ord_no, purch_amt, ord_date, customer_id and salesman_id.
+
+salesman table
+
+name             type
+---------------  ---------------
+salesman_id      numeric(5)
+name                 varchar(30)
+city                    varchar(15)
+commission       decimal(5,2)
+
+orders table
+
+name             type
+---------------  --------
+order_no         int
+purch_amt        real
+order_date       text
+customer_id      int
+salesman_id      int
+ 
+
+For example:
+
+Result
+ord_no      purch_amt   ord_date    customer_id  salesman_id
+----------  ----------  ----------  -----------  -----------
+70011       75.29       2012-08-17  3003         5007
+
+```
+**Program:**
 
 ```sql
--- Paste your SQL code below for Question 5
+SELECT * FROM orders WHERE salesman_id IN (SELECT salesman_id FROM salesman WHERE name="Paul Adam")
 ```
 
 **Output:**
 
-![Output5](output.png)
+<img width="1300" height="883" alt="q5" src="https://github.com/user-attachments/assets/8bc50084-7285-4cd9-8a0e-b0a731d6ea83" />
 
 **Question 6**
 ---
--- Paste Question 6 here
+```
+From the following tables, write a SQL query to determine the commission of the salespeople in Paris. Return commission.
+
+salesman table
+
+name             type
+---------------  ---------------
+salesman_id      numeric(5)
+name                 varchar(30)
+city                    varchar(15)
+commission       decimal(5,2)
+
+customer table
+
+name         type
+-----------  ----------
+customer_id  int
+cust_name    text
+city         text
+grade        int
+salesman_id  int
+For example:
+
+Result
+commission
+----------
+0.14
+
+```
+
+**Program:**
 
 ```sql
--- Paste your SQL code below for Question 6
+SELECT commission FROM salesman WHERE salesman_id IN (SELECT salesman_id FROM customer WHERE city="Paris")
 ```
 
 **Output:**
 
-![Output6](output.png)
+<img width="1304" height="836" alt="q6" src="https://github.com/user-attachments/assets/9705cf2d-71ba-4912-bfaa-5aa1e5bb38ad" />
+
 
 **Question 7**
 ---
--- Paste Question 7 here
+```
+Write a SQL query that retrieve all the columns from the table "Grades", where the grade is equal to the maximum grade achieved in each subject.
+
+Sample table: GRADES (attributes: student_id, student_name, subject, grade)
+
+
+
+For example:
+
+Result
+student_id       student_name     subject          grade
+---------------  ---------------  ---------------  ---------------
+3                Charlie          Math             95
+5                Emma             Science          92
+7                John             Social           85
+
+```
+
+**Program:**
 
 ```sql
--- Paste your SQL code below for Question 7
+SELECT * FROM GRADES GROUP BY subject HAVING(MAX(grade)) ORDER BY student_id
 ```
 
 **Output:**
 
-![Output7](output.png)
+<img width="1272" height="902" alt="q7" src="https://github.com/user-attachments/assets/038e09ba-ecd1-4e74-8bbe-375611b2744b" />
+
 
 **Question 8**
 ---
--- Paste Question 8 here
+```
+Write a SQL query to retrieve all columns from the CUSTOMERS table for customers whose salary is LESS than $2500.
+
+Sample table: CUSTOMERS
+
+ID          NAME        AGE         ADDRESS     SALARY
+----------  ----------  ----------  ----------  ----------
+
+1          Ramesh     32              Ahmedabad     2000
+2          Khilan        25              Delhi                 1500
+3          Kaushik      23              Kota                  2000
+4          Chaitali       25             Mumbai            6500
+5          Hardik        27              Bhopal              8500
+6          Komal         22              Hyderabad       4500
+
+7           Muffy          24              Indore            10000
+
+ 
+ 
+
+For example:
+
+Result
+ID          NAME        AGE         ADDRESS     SALARY
+----------  ----------  ----------  ----------  ----------
+1           Ramesh      32          Ahmedabad   2000
+2           Khilan      25          Delhi       1500
+3           Kaushik     23          Kota        2000
+
+```
+
+**Program:**
 
 ```sql
--- Paste your SQL code below for Question 8
+SELECT * FROM CUSTOMERS WHERE salary < 2500
 ```
 
 **Output:**
 
-![Output8](output.png)
+<img width="1291" height="909" alt="q8" src="https://github.com/user-attachments/assets/9fd5d09f-7e6b-490f-a549-9d2e8eff8d2e" />
+
 
 **Question 9**
 ---
--- Paste Question 9 here
+```
+Write a SQL query to retrieve all columns from the CUSTOMERS table for customers whose salary is greater than $4500.
+
+Sample table: CUSTOMERS
+
+ID          NAME        AGE         ADDRESS     SALARY
+----------  ----------  ----------  ----------  ----------
+
+1          Ramesh     32              Ahmedabad     2000
+2          Khilan        25              Delhi                 1500
+3          Kaushik      23              Kota                  2000
+4          Chaitali       25             Mumbai            6500
+5          Hardik        27              Bhopal              8500
+6          Komal         22              Hyderabad       4500
+
+7           Muffy          24              Indore            10000
+
+ 
+ 
+
+For example:
+
+Result
+ID          NAME        AGE         ADDRESS     SALARY
+----------  ----------  ----------  ----------  ----------
+4           Chaitali    25          Mumbai      6500
+5           Hardik      27          Bhopal      8500
+7           Muffy       24          Indore      10000
+```
+**Program:**
 
 ```sql
--- Paste your SQL code below for Question 9
+SELECT * FROM CUSTOMERS WHERE SALARY > 4500
 ```
 
 **Output:**
 
-![Output9](output.png)
+<img width="1264" height="899" alt="q9" src="https://github.com/user-attachments/assets/288dbd3f-2be9-47a3-b210-0f93e45f27da" />
+
 
 **Question 10**
 ---
--- Paste Question 10 here
+```
+Write a SQL query that retrieves the names of students and their corresponding grades, where the grade is equal to the minimum grade achieved in each subject.
+
+Sample table: GRADES (attributes: student_id, student_name, subject, grade)
+
+For example:
+Result
+student_name     grade
+---------------  ---------------
+Bob              85
+Frank            85
+John             85
+```
+**Program:**
 
 ```sql
--- Paste your SQL code below for Question 10
+SELECT student_name, grade FROM GRADES GROUP BY subject HAVING(MIN(grade)) ORDER BY student_id
 ```
 
 **Output:**
 
-![Output10](output.png)
+<img width="1292" height="887" alt="q10" src="https://github.com/user-attachments/assets/8179951a-b78b-40b3-8754-71cff67754bb" />
+
 
 
 ## RESULT
