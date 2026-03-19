@@ -76,55 +76,55 @@ END;
 - Use a simple cursor to fetch and display employee names and designations.
 - Implement exception handling to catch the relevant exceptions and display appropriate messages.
 
-**Output:**  
+**Expected Output:**  
 The program should display the employee details or an error message.
 
 **Program:**
 ```
-CREATE TABLE Employee (emp_id INTEGER PRIMARY KEY, emp_name VARCHAR(40), designation VARCHAR(40));
+CREATE TABLE employees ( emp_id NUMBER PRIMARY KEY, emp_name VARCHAR2(40), designation VARCHAR2(40));
 
-INSERT INTO Employee VALUES (1, 'Ashqar', 'Kill');
-INSERT INTO Employee VALUES (2, 'kumar', 'sales');
-INSERT INTO Employee VALUES (3, 'Kali', 'manufacture');
+INSERT INTO employees VALUES (1, 'Ashqar', 'Manager');
+INSERT INTO employees VALUES (2, 'John', 'Developer');
+INSERT INTO employees VALUES (3, 'Sara', 'Analyst');
+
 DECLARE
-  CURSOR emp_cur IS SELECT emp_name, designation FROM Employee;
-  
-  v_name Employee.emp_name%TYPE;
-  v_designation Employee.designation%TYPE;
-  
+  -- Cursor declaration
+  CURSOR emp_cursor IS
+    SELECT emp_name, designation FROM employees;
+
+  v_name employees.emp_name%TYPE;
+  v_designation employees.designation%TYPE;
+
   v_count NUMBER := 0;
-BEGIN 
-  OPEN emp_cur;
-  
-  LOOP
-    FETCH emp_cur INTO v_name, v_designation;
-    EXIT WHEN emp_cur%NOTFOUND;
+
+BEGIN
+  OPEN emp_cursor;
+
+    FETCH emp_cursor INTO v_name, v_designation;
     v_count := v_count + 1;
-    
-    DBMS_OUTPUT.PUT_LINE('Name: ' || v_name || ' | designation: ' || v_designation);
-  
-  END LOOP;
-  
-  CLOSE emp_cur;
-  
-  IF v_count = 0 THEN 
+    DBMS_OUTPUT.PUT_LINE('Name: ' || v_name || 
+                         ' | Designation: ' || v_designation);
+
+  CLOSE emp_cursor;
+
+  -- Exception for no data
+  IF v_count = 0 THEN
     RAISE NO_DATA_FOUND;
-  END IF; 
-  
-  EXCEPTION 
-    WHEN NO_DATA_FOUND THEN 
-      DBMS_OUTPUT.PUT_LINE('No Employee records found.');
-      
-    WHEN OTHERS THEN 
-      DBMS_OUTPUT.PUT_LINE('ERROR OCCURED: ' || SQLERRM);
-  
+  END IF;
+
+EXCEPTION
+  WHEN NO_DATA_FOUND THEN
+    DBMS_OUTPUT.PUT_LINE('No employee records found.');
+
+  WHEN OTHERS THEN
+    DBMS_OUTPUT.PUT_LINE('Error occurred: ' || SQLERRM);
 END;
 /
 ```
 
 **Output:**
 
-<img width="1919" height="989" alt="output" src="https://github.com/user-attachments/assets/71e9e210-cf6a-465b-8ef0-30f59dd362a4" />
+<img width="1911" height="925" alt="output" src="https://github.com/user-attachments/assets/56e876b4-1277-49dd-af31-6c17548a7fc4" />
 
 ---
 
@@ -142,7 +142,7 @@ END;
 - Use a parameterized cursor to accept a salary range as input and fetch employees within that range.
 - Implement exception handling to catch and display relevant error messages.
 
-**Output:**  
+**Expected Output:**  
 The program should display the employee details within the specified salary range or an error message if no data is found.
 
 **Program:**
@@ -212,7 +212,7 @@ END;
 - Use a cursor FOR loop to fetch and display employee names along with their department numbers.
 - Implement exception handling to catch the relevant exceptions.
 
-**Output:**  
+**Expected Output:**  
 The program should display employee names with their department numbers or the appropriate error message if no data is found.
 
 **Program:**
@@ -275,7 +275,7 @@ END;
 - Declare a cursor using `%ROWTYPE` to fetch complete rows from the `employees` table.
 - Implement exception handling to catch the relevant exceptions and display appropriate messages.
 
-**Output:**  
+**Expected Output:**  
 The program should display employee records or the appropriate error message if no data is found.
 
 **Program:**
@@ -338,8 +338,52 @@ END;
 - Use a cursor with the `FOR UPDATE` clause to lock the rows of employees in a specific department and update their salary.
 - Implement exception handling to handle `NO_DATA_FOUND` or other errors that may occur.
 
-**Output:**  
+**Expected Output:**  
 The program should update employee salaries and display a message, or it should display an error message if no data is found.
+
+**Program:**
+```
+CREATE TABLE Employee (Emp_Id INTEGER PRIMARY KEY, Emp_Name VARCHAR(40), Emp_dept VARCHAR(40), Dept_no NUMBER, Salary NUMBER);
+
+INSERT INTO Employee VALUES (1, 'Ashqar', 'Marketing', 1001, 40000);
+INSERT INTO Employee VALUES (2, 'kumar', 'sales', 1002, 45000);
+INSERT INTO Employee VALUES (3, 'kali', 'manufacture', 1003, 30000 );
+INSERT INTO Employee VALUES (4, 'Ellie', 'Marketing', 1001, 40000);
+INSERT INTO Employee VALUES (5, 'Dina', 'sales', 1002, 45000);
+INSERT INTO Employee VALUES (6, 'Joel', 'Marketing', 1001, 40000);
+
+DECLARE
+  CURSOR emp_cur IS SELECT Salary FROM Employee WHERE Dept_no=1001 FOR UPDATE;
+  v_count INTEGER := 0;
+BEGIN 
+
+  FOR s IN emp_cur LOOP
+    UPDATE Employee SET Salary = Salary + 10000 WHERE CURRENT OF emp_cur;
+    v_count := v_count + 1;
+    
+  END LOOP;
+    
+  
+  IF v_count = 0 then
+    RAISE NO_DATA_FOUND;
+  END IF;
+  
+  EXCEPTION 
+    WHEN NO_DATA_FOUND then
+      DBMS_OUTPUT.PUT_LINE('No Employee Records Found');
+    WHEN OTHERS then
+      DBMS_OUTPUT.PUT_LINE('Error occured: ' || SQLERRM);
+      
+END;
+/
+
+SELECT * FROM Employee
+
+```
+
+**Output:**
+
+<img width="1917" height="931" alt="output" src="https://github.com/user-attachments/assets/53b9664b-4f8c-4bc1-a868-50e701a22faa" />
 
 ---
 
