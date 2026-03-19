@@ -153,6 +153,38 @@ SELECT * FROM Product;
 **Expected Output:**
 - The `audit_log` table will maintain a count of how many updates have been made to the `customer_orders` table.
 
+**Program:**
+```
+CREATE TABLE customer_orders (ord_no INTEGER PRIMARY KEY, Cust_ID INTEGER, purch_amt NUMBER, prodcut_id INTEGER);
+
+INSERT INTO customer_orders VALUES (12301, 1001, 230, 23001);
+INSERT INTO customer_orders VALUES (12302, 1002, 450, 23002);
+INSERT INTO customer_orders VALUES (12303, 1003, 1200, 23003);
+
+CREATE TABLE audit_log (ID INTEGER PRIMARY KEY, C INTEGER);
+
+INSERT INTO audit_log VALUES (1, 0);
+
+CREATE OR REPLACE TRIGGER audit_logging
+AFTER INSERT OR UPDATE ON customer_orders
+FOR EACH ROW 
+BEGIN
+  UPDATE audit_log SET C = C+1;
+END;
+/
+
+UPDATE customer_orders SET Cust_ID=1004 WHERE ord_no=12303;
+
+INSERT INTO customer_orders VALUES (12304, 1005, 540, 23012);
+INSERT INTO customer_orders VALUES (12305, 1006, 2339, 23991);
+
+SELECT * FROM audit_log
+```
+
+**Output:**
+
+<img width="1919" height="922" alt="output" src="https://github.com/user-attachments/assets/91b6b4b8-15ad-42bb-aa38-44c14d0f54ca" />
+
 ---
 
 ## 5. Write a trigger that checks a condition before allowing insertion into a table.
