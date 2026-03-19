@@ -222,5 +222,31 @@ Multiplication table of 5:
 ...  
 5 x 10 = 50
 
+**Program:**
+```
+CREATE OR REPLACE PROCEDURE print_table(n NUMBER)
+IS 
+  
+BEGIN 
+  FOR I in 1..10 LOOP
+    DBMS_OUTPUT.PUT_LINE(n || ' X ' || I || ' = ' || n*i );
+  END LOOP;
+  DBMS_OUTPUT.PUT_LINE('-');
+END;
+/
+
+
+BEGIN
+  print_table(5);
+  print_table(12);
+END;
+/
+```
+
+**Output:**
+
+<img width="1919" height="935" alt="q5" src="https://github.com/user-attachments/assets/b8271752-d8be-4fe3-8a67-1dc56538dec6" />
+
+
 ## RESULT
 Thus, the PL/SQL programs using procedures and functions were written, compiled, and executed successfully.
