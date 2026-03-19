@@ -137,6 +137,29 @@ END;
 **Expected Output:**  
 12 is Even
 
+**Program:**
+```
+CREATE OR REPLACE PROCEDURE check_even_odd(n NUMBER) IS
+BEGIN
+  IF (MOD(n, 2) = 0) THEN
+    DBMS_OUTPUT.PUT_LINE('The number ' || n || ' is Even');
+  else
+    DBMS_OUTPUT.PUT_LINE('The number ' || n || ' is odd');
+  END IF;
+END;
+/
+
+BEGIN
+  check_even_odd(12);
+  check_even_odd(25);
+  check_even_odd(72);
+END;
+/
+```
+**Output:**
+
+<img width="1919" height="930" alt="output" src="https://github.com/user-attachments/assets/a050c1b0-7629-474e-ad75-0be35083b1b1" />
+
 ---
 
 ## 4. Write a PL/SQL Function to Return the Reverse of a Number
