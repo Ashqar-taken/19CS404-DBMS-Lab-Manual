@@ -215,6 +215,50 @@ END;
 **Output:**  
 The program should display employee names with their department numbers or the appropriate error message if no data is found.
 
+**Program:**
+```
+CREATE TABLE Employee (emp_Id INTEGER PRIMARY KEY, emp_Name VARCHAR(40), designation VARCHAR(40));
+
+INSERT INTO Employee VALUES (1, 'Ashqar', 'Kill');
+INSERT INTO Employee VALUES (2, 'kumar', 'sales');
+INSERT INTO Employee VALUES (3, 'kali', 'manufacture');
+
+DECLARE
+  CURSOR emp_cur IS SELECT emp_name, designation FROM Employee;
+  
+  v_name Employee.emp_name%TYPE;
+  v_designation Employee.designation%TYPE;
+  
+  v_count INTEGER := 0;
+BEGIN 
+  OPEN emp_cur;
+    LOOP
+      FETCH emp_cur INTO v_name, v_designation;
+      EXIT WHEN emp_cur%NOTFOUND;
+       v_count := v_count + 1;
+      DBMS_OUTPUT.PUT_LINE('Name: ' || v_name || ' | designation: ' || v_designation);
+     
+    END LOOP;
+  CLOSE Emp_cur;
+  
+  IF v_count = 0 then
+    RAISE NO_DATA_FOUND;
+  END IF;
+  
+  EXCEPTION 
+    WHEN NO_DATA_FOUND then
+      DBMS_OUTPUT.PUT_LINE('No Employee Records Found');
+    WHEN OTHERS then
+      DBMS_OUTPUT.PUT_LINE('Error occured: ' || SQLERRM);
+      
+END;
+/
+```
+
+**Output:**
+
+<img width="1919" height="989" alt="output" src="https://github.com/user-attachments/assets/3dfe2851-7615-45bb-8e56-844aba44a7d0" />
+
 ---
 
 ### **Question 4: Cursor with `%ROWTYPE` and Exception Handling**
@@ -233,6 +277,50 @@ The program should display employee names with their department numbers or the a
 
 **Output:**  
 The program should display employee records or the appropriate error message if no data is found.
+
+**Program:**
+```
+CREATE TABLE Employee (Emp_Id INTEGER PRIMARY KEY, Emp_Name VARCHAR(40), Emp_dept VARCHAR(40));
+
+INSERT INTO Employee VALUES (1, 'harrigton', 'IT');
+INSERT INTO Employee VALUES (2, 'Stefan', 'ML');
+INSERT INTO Employee VALUES (3, 'Ellise', 'Sales');
+
+DECLARE
+  CURSOR emp_cur IS SELECT * FROM Employee;
+  
+  Emp_row Employee%ROWTYPE;
+  
+  v_count INTEGER := 0;
+BEGIN 
+  OPEN emp_cur;
+    LOOP
+      FETCH emp_cur INTO v_name, v_designation;
+      EXIT WHEN emp_cur%NOTFOUND;
+       v_count := v_count + 1;
+      DBMS_OUTPUT.PUT_LINE('ID : ' || Emp_row.Emp_Id || 'Name: ' || Emp_row.Emp_Name || ' | Department: ' || Emp_row.Emp_dept);
+     
+    END LOOP;
+  CLOSE Emp_cur;
+  
+  IF v_count = 0 then
+    RAISE NO_DATA_FOUND;
+  END IF;
+  
+  EXCEPTION 
+    WHEN NO_DATA_FOUND then
+      DBMS_OUTPUT.PUT_LINE('No Employee Records Found');
+    WHEN OTHERS then
+      DBMS_OUTPUT.PUT_LINE('Error occured: ' || SQLERRM);
+      
+END;
+/
+```
+
+**Ouptut:**
+
+
+<img width="1918" height="988" alt="output" src="https://github.com/user-attachments/assets/83420e1c-5f73-4fc3-a837-f1c36cf36002" />
 
 ---
 
