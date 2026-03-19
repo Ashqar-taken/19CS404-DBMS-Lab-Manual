@@ -195,5 +195,30 @@ SELECT * FROM audit_log
 **Expected Output:**
 - If the inserted salary in the `employees` table is below the condition (e.g., salary < 3000), the insert operation is blocked, and an error message is raised, such as: `ERROR: Salary below minimum threshold.`
 
+**Program:**
+```
+CREATE TABLE Employee (Emp_ID INTEGER PRIMARY KEY, Emp_Name VARCHAR(30), Salary NUMBER);
+
+CREATE OR REPLACE TRIGGER sal_trig
+BEFORE INSERT ON Employee
+FOR EACH ROW 
+BEGIN
+  IF :NEW.Salary < 20000 THEN 
+    RAISE_APPLICATION_ERROR(-20001, 'Error: Salary below minimum thershold');
+  END IF;
+END;
+/
+
+INSERT INTO Employee VALUES (1, 'Frank', 32000);
+INSERT INTO Employee VALUES (2, 'Castle', 40000);
+INSERT INTO Employee VALUES (3, 'Matt', 13000);
+
+```
+
+**Output:**
+
+<img width="1919" height="925" alt="output" src="https://github.com/user-attachments/assets/79589770-4267-4196-aa6e-9203a6c0a958" />
+
+
 ## RESULT
 Thus, the PL/SQL trigger programs were written and executed successfully.
