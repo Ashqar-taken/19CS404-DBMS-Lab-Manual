@@ -174,6 +174,36 @@ END;
 **Expected Output:**  
 Reversed number of 1234 is 4321
 
+**Program:**
+```
+CREATE OR REPLACE FUNCTION reverse_number(n NUMBER)
+RETURN NUMBER
+IS 
+  rev_num NUMBER := 0;
+  temp NUMBER := n; 
+BEGIN 
+  WHILE temp > 0 LOOP
+    rev_num := rev_num * 10 + MOD(temp,10);
+    temp := FLOOR(temp/10);
+  END LOOP;
+  RETURN rev_num;
+END;
+/
+
+DECLARE
+  num NUMBER := 56789;
+  rev NUMBER;
+BEGIN
+  rev := reverse_number(num);
+  DBMS_OUTPUT.PUT_LINE('The reverse_number of ' || num || ' is ' || rev);
+END;
+/
+```
+
+**Output:**
+
+<img width="1917" height="931" alt="outpu" src="https://github.com/user-attachments/assets/39f6bdec-b451-4c6d-b69b-da57a78359c8" />
+
 ---
 
 ## 5. Write a PL/SQL Procedure to Display the Multiplication Table of a Number
